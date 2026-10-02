@@ -1,0 +1,3844 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>حساباتي</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Cairo",Tahoma,Arial,sans-serif;
+}
+
+:root{
+    --primary:#7657ff;
+    --primary2:#a855f7;
+    --bg:#f5f7fb;
+    --card:#fff;
+    --text:#171927;
+    --muted:#7b8192;
+    --border:#e8eaf2;
+    --green:#16a36a;
+    --red:#ef476f;
+    --orange:#f59e0b;
+    --blue:#3b82f6;
+    --shadow:0 12px 35px rgba(31,35,60,.07);
+}
+
+body.dark{
+    --bg:#0c1020;
+    --card:#171b2d;
+    --text:#f4f5f8;
+    --muted:#9da4b9;
+    --border:#292e45;
+    --shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    transition:.3s;
+}
+
+button,input,select,textarea{
+    font-family:inherit;
+}
+
+/* LOGIN */
+
+.login-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:
+        radial-gradient(circle at 15% 20%,#8b5cf655,transparent 30%),
+        radial-gradient(circle at 85% 80%,#ec489955,transparent 30%),
+        #0c1020;
+}
+
+.login-box{
+    width:100%;
+    max-width:430px;
+    padding:42px;
+    background:rgba(255,255,255,.97);
+    border-radius:30px;
+    box-shadow:0 30px 80px #0005;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    color:white;
+    border-radius:25px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 15px 35px #7657ff55;
+}
+
+.login-box h1{
+    text-align:center;
+    color:#171927;
+    margin-bottom:7px;
+}
+
+.login-box p{
+    text-align:center;
+    color:#7b8192;
+    margin-bottom:28px;
+}
+
+.input-group{
+    margin-bottom:17px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+input,select,textarea{
+    width:100%;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:13px 15px;
+    border-radius:14px;
+    outline:none;
+    font-size:15px;
+    transition:.2s;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px #7657ff16;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.btn{
+    border:0;
+    border-radius:13px;
+    padding:13px 18px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    box-shadow:0 10px 25px #7657ff35;
+}
+
+.login-btn{
+    width:100%;
+}
+
+.error{
+    color:var(--red);
+    text-align:center;
+    margin-top:14px;
+    display:none;
+}
+
+/* WELCOME */
+
+.welcome{
+    position:fixed;
+    top:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(-130px);
+    z-index:10000;
+    color:white;
+    padding:16px 25px;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 15px 40px #7657ff55;
+    font-weight:bold;
+    opacity:0;
+    transition:.5s;
+}
+
+.welcome.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+/* TOAST */
+
+#toastContainer{
+    position:fixed;
+    top:22px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    width:auto;
+    pointer-events:none;
+}
+
+.toast{
+    min-width:300px;
+    max-width:430px;
+    padding:14px 18px;
+    border-radius:17px;
+    background:var(--card);
+    color:var(--text);
+    border:1px solid var(--border);
+    box-shadow:0 15px 45px rgba(0,0,0,.15);
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:14px;
+    font-weight:bold;
+    animation:toastIn .35s ease forwards;
+}
+
+.toast-icon{
+    width:35px;
+    height:35px;
+    min-width:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    font-size:18px;
+}
+
+.toast.success .toast-icon{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.toast.error .toast-icon{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.toast.warning .toast-icon{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.toast.info .toast-icon{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.toast.hide{
+    animation:toastOut .3s ease forwards;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateY(-20px) scale(.95);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes toastOut{
+    from{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+    to{
+        opacity:0;
+        transform:translateY(-15px) scale(.95);
+    }
+}
+
+/* APP */
+
+.app{
+    display:none;
+}
+
+.sidebar{
+    position:fixed;
+    right:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:linear-gradient(180deg,#15182c,#101323);
+    color:white;
+    padding:25px 15px;
+    z-index:20;
+}
+
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px;
+    margin-bottom:30px;
+}
+
+.mini-logo{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.sidebar-logo h2{
+    font-size:18px;
+}
+
+.nav-btn{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#aeb5ca;
+    padding:13px;
+    margin-bottom:6px;
+    border-radius:13px;
+    text-align:right;
+    cursor:pointer;
+    font-size:14px;
+    transition:.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    background:#ffffff12;
+    color:white;
+}
+
+.logout{
+    position:absolute;
+    bottom:22px;
+    width:calc(100% - 30px);
+    color:#ff8da4;
+}
+
+/* MAIN */
+
+.main{
+    margin-right:250px;
+    padding:30px;
+    max-width:1550px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.date-now{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:4px;
+}
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.card-title{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.card-value{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.balance-card{
+    color:white;
+    background:linear-gradient(135deg,#6655f5,#a855f7);
+    border:0;
+}
+
+.balance-card .card-title{
+    color:#ffffffaa;
+}
+
+.balance-card .card-value{
+    font-size:32px;
+}
+
+.green{
+    color:var(--green);
+}
+
+.red{
+    color:var(--red);
+}
+
+/* SECTIONS */
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:23px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+}
+
+.panel h2{
+    font-size:18px;
+    margin-bottom:18px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn-green{
+    color:white;
+    background:var(--green);
+}
+
+.btn-red{
+    color:white;
+    background:var(--red);
+}
+
+.btn-gray{
+    background:#eef0f5;
+    color:#444;
+}
+
+.btn-blue{
+    background:var(--blue);
+    color:white;
+}
+
+.btn-orange{
+    background:var(--orange);
+    color:white;
+}
+
+/* TABLE */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:13px 10px;
+    text-align:right;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+}
+
+th{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.badge{
+    padding:5px 9px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badge-income{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.badge-expense{
+    background:#ffe1e8;
+    color:#d92d55;
+}
+
+.small-btn{
+    border:0;
+    padding:7px 9px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-left:3px;
+}
+
+.edit{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.delete{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.empty{
+    text-align:center;
+    padding:35px;
+    color:var(--muted);
+}
+
+/* ANALYSIS */
+
+.analysis-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.analysis-item{
+    padding:17px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:var(--bg);
+}
+
+.analysis-item h3{
+    font-size:15px;
+    margin-bottom:7px;
+}
+
+.analysis-value{
+    font-size:21px;
+    font-weight:bold;
+}
+
+.analysis-change{
+    margin-top:7px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.up{
+    color:var(--red);
+}
+
+.down{
+    color:var(--green);
+}
+
+.same{
+    color:var(--muted);
+}
+
+/* SETTINGS */
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.setting-info h3{
+    font-size:15px;
+    margin-bottom:4px;
+}
+
+.setting-info p{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* VAULTS */
+
+.vaults-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.vault-card{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:19px;
+    padding:20px;
+    position:relative;
+}
+
+.vault-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.vault-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.vault-icon{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    font-size:21px;
+}
+
+.vault-balance{
+    font-size:27px;
+    font-weight:bold;
+    margin-bottom:17px;
+}
+
+.vault-actions{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.vault-actions button{
+    border:0;
+    padding:9px 11px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.vault-add{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.vault-withdraw{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.vault-edit{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.vault-delete{
+    background:#ffe4e6;
+    color:#be123c;
+}
+
+.vault-main{
+    border:2px solid #7657ff44;
+}
+
+.total-vault{
+    padding:18px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#7657ff,#a855f7);
+    color:white;
+    margin-bottom:20px;
+}
+
+.total-vault span{
+    opacity:.8;
+    font-size:13px;
+}
+
+.total-vault strong{
+    display:block;
+    font-size:29px;
+    margin-top:5px;
+}
+
+/* SWITCH */
+
+.switch{
+    width:58px;
+    height:31px;
+    border-radius:30px;
+    border:0;
+    cursor:pointer;
+    background:#d6d9e3;
+    position:relative;
+    transition:.3s;
+}
+
+.switch::after{
+    content:"";
+    position:absolute;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:white;
+    top:3px;
+    right:3px;
+    transition:.3s;
+}
+
+.switch.active{
+    background:var(--primary);
+}
+
+.switch.active::after{
+    right:30px;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#0008;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    padding:20px;
+}
+
+.modal-box{
+    width:100%;
+    max-width:450px;
+    background:var(--card);
+    color:var(--text);
+    border-radius:23px;
+    padding:25px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.close{
+    float:left;
+    border:0;
+    background:transparent;
+    color:var(--text);
+    font-size:25px;
+    cursor:pointer;
+}
+
+.month-header{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.month-header select{
+    max-width:250px;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:75px;
+        padding:15px 8px;
+    }
+
+    .sidebar-logo h2,
+    .nav-btn span{
+        display:none;
+    }
+
+    .sidebar-logo{
+        justify-content:center;
+    }
+
+    .nav-btn{
+        text-align:center;
+        font-size:20px;
+    }
+
+    .main{
+        margin-right:75px;
+        padding:18px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid-2{
+        grid-template-columns:1fr;
+    }
+
+    .vaults-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:550px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .analysis-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .panel{
+        padding:17px;
+    }
+
+    .topbar h1{
+        font-size:22px;
+    }
+
+    .login-box{
+        padding:30px 20px;
+    }
+
+    #toastContainer{
+        width:calc(100% - 30px);
+    }
+
+    .toast{
+        width:100%;
+        min-width:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div class="login-screen" id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="logo">💰</div>
+
+        <h1>حساباتي</h1>
+
+        <p>إدارة أموالك ومصروفاتك بسهولة</p>
+
+        <div class="input-group">
+            <label>اسم المستخدم</label>
+            <input id="username" placeholder="اسم المستخدم">
+        </div>
+
+        <div class="input-group">
+            <label>كلمة المرور</label>
+            <input id="password" type="password" placeholder="كلمة المرور">
+        </div>
+
+        <button class="btn btn-primary login-btn" onclick="login()">
+            دخول
+        </button>
+
+        <div class="error" id="loginError">
+            اسم المستخدم أو كلمة المرور غير صحيحة
+        </div>
+
+    </div>
+</div>
+
+<div class="welcome" id="welcomeMessage">
+    مرحبًا 👋
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- APP -->
+
+<div class="app" id="app">
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <div class="mini-logo">💰</div>
+        <h2>حساباتي</h2>
+    </div>
+
+    <button class="nav-btn active" onclick="showSection('dashboard',this)">
+        🏠 <span>الرئيسية</span>
+    </button>
+
+    <button class="nav-btn" onclick="showSection('transactions',this)">
+        📋 <span>كل العمليات</span>
+    </button>
+
+    <button class="nav-btn" onclick="showSection('months',this)">
+        📅 <span>المصروفات الشهرية</span>
+    </button>
+
+    <button class="nav-btn" onclick="showSection('add',this)">
+        ➕ <span>إضافة عملية</span>
+    </button>
+
+    <button class="nav-btn" onclick="showSection('settings',this)">
+        ⚙️ <span>الإعدادات</span>
+    </button>
+
+    <button class="nav-btn logout" onclick="logout()">
+        🚪 <span>تسجيل خروج</span>
+    </button>
+
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+
+    <div>
+        <h1 id="pageTitle">الرئيسية</h1>
+        <div class="date-now" id="currentDate"></div>
+    </div>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<section class="section active" id="dashboard">
+
+    <div class="cards">
+
+        <div class="card balance-card">
+
+            <div class="card-title">
+                إجمالي الرصيد
+            </div>
+
+            <div class="card-value" id="balance">
+                0 ج.م
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-title">
+                مصروفات اليوم
+            </div>
+
+            <div class="card-value red" id="todayExpense">
+                0 ج.م
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-title">
+                عدد العمليات
+            </div>
+
+            <div class="card-value" id="transactionCount">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="grid-2">
+
+        <div class="panel">
+
+            <h2>⚡ إضافة سريعة</h2>
+
+            <div class="actions">
+
+                <button class="btn btn-green" onclick="openQuick('income')">
+                    ➕ إضافة رصيد
+                </button>
+
+                <button class="btn btn-red" onclick="openQuick('expense')">
+                    💸 إضافة مصروف
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="panel">
+
+            <h2>📊 ملخص الشهر الحالي</h2>
+
+            <p>
+                مصروفات الشهر:
+                <strong class="red" id="monthExpense">0 ج.م</strong>
+            </p>
+
+            <br>
+
+            <p>
+                متوسط المصروف اليومي:
+                <strong id="dailyAverage">0 ج.م</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- VAULT SUMMARY -->
+
+    <div class="panel">
+
+        <h2>🏦 الخزائن</h2>
+
+        <div id="dashboardVaults"></div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>📈 الشهر ده اختلف عن الشهر اللي فات في إيه؟</h2>
+
+        <div id="monthlyAnalysis"></div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>🕐 آخر العمليات</h2>
+
+        <div id="recentTransactions"></div>
+
+    </div>
+
+</section>
+
+<!-- TRANSACTIONS -->
+
+<section class="section" id="transactions">
+
+<div class="panel">
+
+    <h2>📋 كل العمليات</h2>
+
+    <div class="month-header">
+
+        <select id="filterType" onchange="renderTransactions()">
+
+            <option value="all">كل العمليات</option>
+            <option value="income">الإضافات فقط</option>
+            <option value="expense">المصروفات فقط</option>
+
+        </select>
+
+        <input type="month" id="filterMonth" onchange="renderTransactions()">
+
+    </div>
+
+    <div id="transactionsTable"></div>
+
+</div>
+
+</section>
+
+<!-- MONTHS -->
+
+<section class="section" id="months">
+
+<div class="panel">
+
+    <h2>📅 سجل الشهور</h2>
+
+    <div class="month-header">
+
+        <select id="monthSelect" onchange="renderMonth()"></select>
+
+    </div>
+
+    <div id="monthSummary"></div>
+
+    <div id="monthTransactions"></div>
+
+</div>
+
+</section>
+
+<!-- ADD -->
+
+<section class="section" id="add">
+
+<div class="panel">
+
+    <h2>➕ إضافة عملية جديدة</h2>
+
+    <div class="form-grid">
+
+        <div class="input-group">
+
+            <label>نوع العملية</label>
+
+            <select id="operationType" onchange="updateVaultLabel()">
+
+                <option value="expense">مصروف</option>
+                <option value="income">إضافة رصيد</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>المبلغ</label>
+
+            <input type="number" id="operationAmount" min="0" placeholder="مثال: 250">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>التاريخ</label>
+
+            <input type="date" id="operationDate">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>الخزنة</label>
+
+            <select id="operationVault"></select>
+            
+        </div>
+
+        <div class="input-group">
+
+            <label>التصنيف</label>
+
+            <select id="operationCategory">
+
+                <option>طعام</option>
+                <option>مواصلات</option>
+                <option>فواتير</option>
+                <option>تسوق</option>
+                <option>ترفيه</option>
+                <option>مرتب</option>
+                <option>عمل</option>
+                <option>أخرى</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group full">
+
+            <label>اتصرف في إيه؟</label>
+
+            <textarea id="operationNote" placeholder="مثال: غداء ومشروبات..."></textarea>
+
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary" onclick="addTransaction()">
+        حفظ العملية
+    </button>
+
+</div>
+
+</section>
+
+<!-- SETTINGS -->
+
+<section class="section" id="settings">
+
+<!-- ACCOUNT -->
+
+<div class="panel">
+
+    <h2>👤 الحساب</h2>
+
+    <div class="input-group">
+
+        <label>اسم المستخدم</label>
+
+        <input id="newUsername" placeholder="اسم المستخدم">
+
+    </div>
+
+    <button class="btn btn-primary" onclick="changeUsername()">
+        حفظ اسم المستخدم
+    </button>
+
+</div>
+
+<!-- VAULTS -->
+
+<div class="panel">
+
+    <h2>🏦 الخزائن</h2>
+
+    <div class="total-vault">
+
+        <span>إجمالي أموال جميع الخزائن</span>
+
+        <strong id="vaultTotal">
+            0 ج.م
+        </strong>
+
+    </div>
+
+    <div
+        class="actions"
+        style="margin-bottom:20px"
+    >
+
+        <button
+            class="btn btn-primary"
+            onclick="openAddVault()"
+        >
+            ➕ إضافة خزنة جديدة
+        </button>
+
+    </div>
+
+    <div
+        class="vaults-grid"
+        id="vaultsContainer"
+    ></div>
+
+</div>
+
+<!-- THEME -->
+
+<div class="panel">
+
+    <h2>🎨 شكل البرنامج</h2>
+
+    <div class="setting-row">
+
+        <div class="setting-info">
+
+            <h3>الوضع الليلي</h3>
+
+            <p>التبديل بين الوضع النهاري والليلي</p>
+
+        </div>
+
+        <button
+            class="switch"
+            id="themeSwitch"
+            onclick="toggleTheme()"
+        ></button>
+
+    </div>
+
+</div>
+
+<!-- BALANCE -->
+
+<div class="panel">
+
+    <h2>💰 تعديل الرصيد</h2>
+
+    <div class="input-group">
+
+        <label>اختار الخزنة</label>
+
+        <select id="manualBalanceVault"></select>
+
+    </div>
+
+    <div class="input-group">
+
+        <label>الرصيد الجديد</label>
+
+        <input type="number" id="manualBalance" min="0">
+
+    </div>
+
+    <button class="btn btn-green" onclick="setBalance()">
+        حفظ الرصيد
+    </button>
+
+</div>
+
+<!-- PASSWORD -->
+
+<div class="panel">
+
+    <h2>🔐 تغيير كلمة المرور</h2>
+
+    <div class="input-group">
+
+        <label>كلمة المرور الحالية</label>
+        <input type="password" id="oldPassword">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>كلمة المرور الجديدة</label>
+        <input type="password" id="newPassword">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>تأكيد كلمة المرور</label>
+        <input type="password" id="confirmPassword">
+
+    </div>
+
+    <button class="btn btn-primary" onclick="changePassword()">
+        تغيير كلمة المرور
+    </button>
+
+    <p id="passwordMessage" style="margin-top:15px"></p>
+
+</div>
+
+<!-- DELETE -->
+
+<div class="panel">
+
+    <h2>🗑️ إدارة البيانات</h2>
+
+    <p style="color:var(--muted);margin-bottom:15px">
+        حذف كل العمليات والخزائن سيعيد البرنامج لحالة البداية.
+    </p>
+
+    <button class="btn btn-red" onclick="clearAllData()">
+        حذف كل البيانات
+    </button>
+
+</div>
+
+</section>
+
+</main>
+</div>
+
+<!-- QUICK MODAL -->
+
+<div class="modal" id="quickModal">
+
+<div class="modal-box">
+
+    <button class="close" onclick="closeQuick()">×</button>
+
+    <h2 id="quickTitle">إضافة عملية</h2>
+
+    <br>
+
+    <div class="input-group">
+
+        <label>الخزنة</label>
+
+        <select id="quickVault"></select>
+
+    </div>
+
+    <div class="input-group">
+
+        <label>المبلغ</label>
+
+        <input type="number" id="quickAmount" min="0">
+
+    </div>
+
+    <div class="input-group">
+
+        <label>اتصرف في إيه / مصدر الرصيد</label>
+
+        <input id="quickNote" placeholder="مثال: مرتب، أكل، مواصلات">
+
+    </div>
+
+    <button class="btn btn-primary" style="width:100%" onclick="saveQuick()">
+        حفظ
+    </button>
+
+</div>
+</div>
+
+<!-- VAULT MODAL -->
+
+<div class="modal" id="vaultModal">
+
+<div class="modal-box">
+
+    <button class="close" onclick="closeVaultModal()">×</button>
+
+    <h2 id="vaultModalTitle">إضافة خزنة</h2>
+
+    <br>
+
+    <div class="input-group">
+
+        <label>اسم الخزنة</label>
+
+        <input id="vaultName" placeholder="مثال: خزنة البيت">
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        style="width:100%"
+        onclick="saveVault()"
+    >
+        حفظ الخزنة
+    </button>
+
+</div>
+</div>
+
+<!-- VAULT MONEY MODAL -->
+
+<div class="modal" id="vaultMoneyModal">
+
+<div class="modal-box">
+
+    <button class="close" onclick="closeVaultMoneyModal()">×</button>
+
+    <h2 id="vaultMoneyTitle">إضافة مبلغ</h2>
+
+    <br>
+
+    <div class="input-group">
+
+        <label>المبلغ</label>
+
+        <input
+            type="number"
+            id="vaultMoneyAmount"
+            min="0"
+            placeholder="0"
+        >
+
+    </div>
+
+    <div class="input-group">
+
+        <label>ملاحظة</label>
+
+        <input
+            id="vaultMoneyNote"
+            placeholder="مثال: مرتب، سحب..."
+        >
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        style="width:100%"
+        onclick="saveVaultMoney()"
+    >
+        حفظ
+    </button>
+
+</div>
+</div>
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+let data =
+JSON.parse(localStorage.getItem("moneyAppData")) || {};
+
+let settings =
+JSON.parse(localStorage.getItem("moneyAppSettings")) || {
+    username:"admin",
+    password:"1234",
+    theme:"light"
+};
+
+let quickType="expense";
+let vaultMoneyType="income";
+let currentVaultId=null;
+let editingVaultId=null;
+
+
+/* =========================
+   MIGRATION / DEFAULT
+========================= */
+
+function initializeData(){
+
+    if(!Array.isArray(data.transactions)){
+        data.transactions=[];
+    }
+
+    if(!Array.isArray(data.vaults)){
+
+        const oldBalance =
+            Number(data.balance) || 0;
+
+        data.vaults=[
+
+            {
+                id:"main",
+                name:"الخزنة الأساسية",
+                balance:oldBalance,
+                main:true
+            }
+
+        ];
+
+    }
+
+    if(!data.vaults.length){
+
+        data.vaults=[
+
+            {
+                id:"main",
+                name:"الخزنة الأساسية",
+                balance:0,
+                main:true
+            }
+
+        ];
+
+    }
+
+    /* نقل العمليات القديمة للخزنة الأساسية */
+
+    data.transactions.forEach(t=>{
+
+        if(!t.vaultId){
+
+            t.vaultId="main";
+
+        }
+
+    });
+
+    syncBalance();
+
+    saveData();
+
+}
+
+initializeData();
+
+
+function saveData(){
+
+    localStorage.setItem(
+        "moneyAppData",
+        JSON.stringify(data)
+    );
+
+}
+
+function saveSettings(){
+
+    localStorage.setItem(
+        "moneyAppSettings",
+        JSON.stringify(settings)
+    );
+
+}
+
+
+/* =========================
+   BALANCE SYNC
+========================= */
+
+function syncBalance(){
+
+    data.balance =
+        data.vaults.reduce(
+            (sum,v)=>sum+Number(v.balance||0),
+            0
+        );
+
+}
+
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+function showNotification(message,type="success"){
+
+    const container=
+        document.getElementById("toastContainer");
+
+    const toast=
+        document.createElement("div");
+
+    const icons={
+        success:"✓",
+        error:"×",
+        warning:"!",
+        info:"i"
+    };
+
+    toast.className=`toast ${type}`;
+
+    toast.innerHTML=`
+
+        <div class="toast-icon">
+            ${icons[type] || "✓"}
+        </div>
+
+        <div>
+            ${escapeHTML(message)}
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(()=>{
+
+        toast.classList.add("hide");
+
+        setTimeout(()=>{
+            toast.remove();
+        },300);
+
+    },3000);
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+    const username=
+        document.getElementById("username").value.trim();
+
+    const password=
+        document.getElementById("password").value;
+
+    if(
+        username===settings.username &&
+        password===settings.password
+    ){
+
+        document.getElementById("loginScreen").style.display="none";
+
+        document.getElementById("app").style.display="block";
+
+        document.getElementById("loginError").style.display="none";
+
+        updateAll();
+
+        showWelcome();
+
+    }else{
+
+        document.getElementById("loginError").style.display="block";
+
+        showNotification(
+            "بيانات الدخول غير صحيحة",
+            "error"
+        );
+
+    }
+
+}
+
+
+function showWelcome(){
+
+    const welcome=
+        document.getElementById("welcomeMessage");
+
+    welcome.textContent=
+        `مرحبًا ${settings.username} 👋`;
+
+    welcome.classList.add("show");
+
+    setTimeout(()=>{
+        welcome.classList.remove("show");
+    },3500);
+
+}
+
+
+function logout(){
+
+    document.getElementById("app").style.display="none";
+
+    document.getElementById("loginScreen").style.display="flex";
+
+    document.getElementById("password").value="";
+
+    showNotification(
+        "تم تسجيل الخروج 👋",
+        "info"
+    );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showSection(id,button){
+
+    document.querySelectorAll(".section")
+        .forEach(s=>s.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    document.querySelectorAll(".nav-btn")
+        .forEach(b=>b.classList.remove("active"));
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    const titles={
+        dashboard:"الرئيسية",
+        transactions:"كل العمليات",
+        months:"المصروفات الشهرية",
+        add:"إضافة عملية",
+        settings:"الإعدادات"
+    };
+
+    document.getElementById("pageTitle")
+        .textContent=titles[id];
+
+    updateAll();
+
+}
+
+
+/* =========================
+   VAULT HELPERS
+========================= */
+
+function getVault(id){
+
+    return data.vaults.find(v=>v.id===id);
+
+}
+
+function getVaultName(id){
+
+    const vault=getVault(id);
+
+    return vault ? vault.name : "خزنة محذوفة";
+
+}
+
+
+/* =========================
+   VAULT SELECTS
+========================= */
+
+function populateVaultSelects(){
+
+    const selects=[
+        document.getElementById("operationVault"),
+        document.getElementById("quickVault"),
+        document.getElementById("manualBalanceVault")
+    ];
+
+    selects.forEach(select=>{
+
+        if(!select)return;
+
+        const old=select.value;
+
+        select.innerHTML=
+            data.vaults.map(v=>`
+
+                <option value="${v.id}">
+                    ${escapeHTML(v.name)}
+                    — ${formatMoney(v.balance)}
+                </option>
+
+            `).join("");
+
+        if(
+            data.vaults.some(v=>v.id===old)
+        ){
+
+            select.value=old;
+
+        }else{
+
+            select.value=data.vaults[0]?.id || "";
+
+        }
+
+    });
+
+    updateManualBalance();
+
+}
+
+
+function updateManualBalance(){
+
+    const select=
+        document.getElementById("manualBalanceVault");
+
+    const input=
+        document.getElementById("manualBalance");
+
+    if(!select || !input)return;
+
+    const vault=getVault(select.value);
+
+    if(vault){
+
+        input.value=vault.balance;
+
+    }
+
+}
+
+
+/* =========================
+   ADD TRANSACTION
+========================= */
+
+function addTransaction(){
+
+    const type=
+        document.getElementById("operationType").value;
+
+    const amount=
+        Number(document.getElementById("operationAmount").value);
+
+    const date=
+        document.getElementById("operationDate").value;
+
+    const vaultId=
+        document.getElementById("operationVault").value;
+
+    const category=
+        document.getElementById("operationCategory").value;
+
+    const note=
+        document.getElementById("operationNote").value.trim();
+
+    const vault=getVault(vaultId);
+
+    if(!vault){
+
+        showNotification(
+            "اختر خزنة صحيحة",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!amount || amount<=0){
+
+        showNotification(
+            "من فضلك أدخل مبلغ صحيح",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!date){
+
+        showNotification(
+            "من فضلك اختر التاريخ",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        type==="expense" &&
+        amount>vault.balance
+    ){
+
+        if(
+            !confirm(
+                `الرصيد في "${vault.name}" هو ${formatMoney(vault.balance)} فقط. هل تريد الاستمرار؟`
+            )
+        ){
+            return;
+        }
+
+    }
+
+    data.transactions.push({
+
+        id:Date.now(),
+
+        type,
+
+        amount,
+
+        date,
+
+        vaultId,
+
+        category,
+
+        note
+
+    });
+
+    if(type==="income"){
+
+        vault.balance+=amount;
+
+    }else{
+
+        vault.balance-=amount;
+
+    }
+
+    syncBalance();
+
+    saveData();
+
+    document.getElementById("operationAmount").value="";
+    document.getElementById("operationNote").value="";
+
+    showNotification(
+        type==="income"
+        ?"تم إضافة الرصيد للخزنة بنجاح 💰"
+        :"تم تسجيل المصروف وخصمه من الخزنة 💸",
+        "success"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   DELETE TRANSACTION
+========================= */
+
+function deleteTransaction(id){
+
+    const t=
+        data.transactions.find(x=>x.id===id);
+
+    if(!t)return;
+
+    if(!confirm("هل تريد حذف العملية؟")){
+        return;
+    }
+
+    const vault=getVault(t.vaultId);
+
+    if(vault){
+
+        if(t.type==="income"){
+
+            vault.balance-=t.amount;
+
+        }else{
+
+            vault.balance+=t.amount;
+
+        }
+
+    }
+
+    data.transactions=
+        data.transactions.filter(x=>x.id!==id);
+
+    syncBalance();
+
+    saveData();
+
+    showNotification(
+        "تم حذف العملية وإرجاع المبلغ للخزنة 🗑️",
+        "info"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   EDIT TRANSACTION
+========================= */
+
+function editTransaction(id){
+
+    const t=
+        data.transactions.find(x=>x.id===id);
+
+    if(!t)return;
+
+    const oldVault=getVault(t.vaultId);
+
+    if(oldVault){
+
+        if(t.type==="income"){
+            oldVault.balance-=t.amount;
+        }else{
+            oldVault.balance+=t.amount;
+        }
+
+    }
+
+    const amount=
+        prompt("المبلغ الجديد:",t.amount);
+
+    if(amount===null){
+
+        if(oldVault){
+
+            if(t.type==="income"){
+                oldVault.balance+=t.amount;
+            }else{
+                oldVault.balance-=t.amount;
+            }
+
+        }
+
+        return;
+
+    }
+
+    const newAmount=Number(amount);
+
+    if(!newAmount || newAmount<=0){
+
+        showNotification(
+            "المبلغ غير صحيح",
+            "error"
+        );
+
+        /* إعادة العملية القديمة */
+
+        if(oldVault){
+
+            if(t.type==="income"){
+                oldVault.balance+=t.amount;
+            }else{
+                oldVault.balance-=t.amount;
+            }
+
+        }
+
+        return;
+
+    }
+
+    t.amount=newAmount;
+
+    const note=
+        prompt("التفاصيل:",t.note);
+
+    if(note!==null){
+        t.note=note;
+    }
+
+    const vault=getVault(t.vaultId);
+
+    if(vault){
+
+        if(t.type==="income"){
+            vault.balance+=newAmount;
+        }else{
+            vault.balance-=newAmount;
+        }
+
+    }
+
+    syncBalance();
+
+    saveData();
+
+    showNotification(
+        "تم تعديل العملية ✏️",
+        "success"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   TRANSACTIONS TABLE
+========================= */
+
+function renderTransactions(){
+
+    const type=
+        document.getElementById("filterType").value;
+
+    const month=
+        document.getElementById("filterMonth").value;
+
+    let list=[...data.transactions];
+
+    if(type!=="all"){
+
+        list=list.filter(
+            t=>t.type===type
+        );
+
+    }
+
+    if(month){
+
+        list=list.filter(
+            t=>t.date.startsWith(month)
+        );
+
+    }
+
+    list.sort(
+        (a,b)=>new Date(b.date)-new Date(a.date)
+    );
+
+    if(!list.length){
+
+        document.getElementById("transactionsTable")
+            .innerHTML=
+            `<div class="empty">لا توجد عمليات</div>`;
+
+        return;
+
+    }
+
+    let html=`
+
+    <div class="table-wrapper">
+
+    <table>
+
+    <thead>
+
+    <tr>
+        <th>التاريخ</th>
+        <th>الخزنة</th>
+        <th>النوع</th>
+        <th>المبلغ</th>
+        <th>التصنيف</th>
+        <th>التفاصيل</th>
+        <th>إجراء</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    `;
+
+    list.forEach(t=>{
+
+        const income=t.type==="income";
+
+        html+=`
+
+        <tr>
+
+            <td>${formatDate(t.date)}</td>
+
+            <td>
+                🏦 ${escapeHTML(getVaultName(t.vaultId))}
+            </td>
+
+            <td>
+
+                <span class="badge ${
+                    income
+                    ?"badge-income"
+                    :"badge-expense"
+                }">
+
+                    ${income?"إضافة":"مصروف"}
+
+                </span>
+
+            </td>
+
+            <td class="${income?"green":"red"}">
+
+                ${income?"+":"-"}
+                ${formatMoney(t.amount)}
+
+            </td>
+
+            <td>
+                ${escapeHTML(t.category||"-")}
+            </td>
+
+            <td>
+                ${escapeHTML(t.note||"-")}
+            </td>
+
+            <td>
+
+                <button
+                    class="small-btn edit"
+                    onclick="editTransaction(${t.id})"
+                >
+                    ✏️
+                </button>
+
+                <button
+                    class="small-btn delete"
+                    onclick="deleteTransaction(${t.id})"
+                >
+                    🗑️
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    html+=`
+
+    </tbody>
+
+    </table>
+
+    </div>
+    `;
+
+    document.getElementById("transactionsTable")
+        .innerHTML=html;
+
+}
+
+
+/* =========================
+   MONTHS
+========================= */
+
+function populateMonths(){
+
+    const select=
+        document.getElementById("monthSelect");
+
+    const months=[
+        ...new Set(
+            data.transactions.map(
+                t=>t.date.substring(0,7)
+            )
+        )
+    ];
+
+    const current=
+        new Date()
+        .toISOString()
+        .substring(0,7);
+
+    if(!months.includes(current)){
+        months.push(current);
+    }
+
+    months.sort().reverse();
+
+    const old=select.value;
+
+    select.innerHTML=
+        months.map(month=>`
+
+            <option value="${month}">
+                ${formatMonth(month)}
+            </option>
+
+        `).join("");
+
+    if(months.includes(old)){
+        select.value=old;
+    }
+
+}
+
+
+function renderMonth(){
+
+    const month=
+        document.getElementById("monthSelect").value;
+
+    const list=
+        data.transactions.filter(
+            t=>t.date.startsWith(month)
+        );
+
+    const income=
+        list
+        .filter(t=>t.type==="income")
+        .reduce((sum,t)=>sum+t.amount,0);
+
+    const expense=
+        list
+        .filter(t=>t.type==="expense")
+        .reduce((sum,t)=>sum+t.amount,0);
+
+    document.getElementById("monthSummary")
+        .innerHTML=`
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="card-title">
+                    إضافات الشهر
+                </div>
+
+                <div class="card-value green">
+                    ${formatMoney(income)}
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    مصروفات الشهر
+                </div>
+
+                <div class="card-value red">
+                    ${formatMoney(expense)}
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    صافي الشهر
+                </div>
+
+                <div class="card-value">
+                    ${formatMoney(income-expense)}
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    if(!list.length){
+
+        document.getElementById("monthTransactions")
+            .innerHTML=
+            `<div class="empty">
+                لا توجد عمليات في هذا الشهر
+            </div>`;
+
+        return;
+
+    }
+
+    let html=`
+
+    <div class="table-wrapper">
+
+    <table>
+
+    <thead>
+
+    <tr>
+        <th>التاريخ</th>
+        <th>الخزنة</th>
+        <th>النوع</th>
+        <th>المبلغ</th>
+        <th>التفاصيل</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    `;
+
+    list.sort(
+        (a,b)=>new Date(b.date)-new Date(a.date)
+    );
+
+    list.forEach(t=>{
+
+        html+=`
+
+        <tr>
+
+            <td>${formatDate(t.date)}</td>
+
+            <td>
+                🏦 ${escapeHTML(getVaultName(t.vaultId))}
+            </td>
+
+            <td>
+                ${
+                    t.type==="income"
+                    ?"🟢 إضافة"
+                    :"🔴 مصروف"
+                }
+            </td>
+
+            <td>${formatMoney(t.amount)}</td>
+
+            <td>
+                ${escapeHTML(t.note||t.category||"-")}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    html+=`
+
+    </tbody>
+
+    </table>
+
+    </div>
+    `;
+
+    document.getElementById("monthTransactions")
+        .innerHTML=html;
+
+}
+
+
+/* =========================
+   MONTH ANALYSIS
+========================= */
+
+function monthlyAnalysis(){
+
+    const now=new Date();
+
+    const currentMonth=
+        now.toISOString().substring(0,7);
+
+    const previousDate=
+        new Date(
+            now.getFullYear(),
+            now.getMonth()-1,
+            1
+        );
+
+    const previousMonth=
+        previousDate.toISOString().substring(0,7);
+
+    const categories=[
+        "طعام",
+        "مواصلات",
+        "فواتير",
+        "تسوق",
+        "ترفيه",
+        "مرتب",
+        "عمل",
+        "أخرى"
+    ];
+
+    let html="";
+    let found=false;
+
+    categories.forEach(category=>{
+
+        const current=
+            data.transactions
+            .filter(t=>
+                t.type==="expense" &&
+                t.date.startsWith(currentMonth) &&
+                t.category===category
+            )
+            .reduce((sum,t)=>sum+t.amount,0);
+
+        const previous=
+            data.transactions
+            .filter(t=>
+                t.type==="expense" &&
+                t.date.startsWith(previousMonth) &&
+                t.category===category
+            )
+            .reduce((sum,t)=>sum+t.amount,0);
+
+        if(current===0 && previous===0){
+            return;
+        }
+
+        found=true;
+
+        const difference=current-previous;
+
+        let status="";
+
+        if(difference>0){
+
+            status=`
+                <div class="analysis-change up">
+                    ↑ زادت ${formatMoney(difference)}
+                </div>
+            `;
+
+        }else if(difference<0){
+
+            status=`
+                <div class="analysis-change down">
+                    ↓ قلت ${formatMoney(Math.abs(difference))}
+                </div>
+            `;
+
+        }else{
+
+            status=`
+                <div class="analysis-change same">
+                    — لم تتغير
+                </div>
+            `;
+
+        }
+
+        html+=`
+
+        <div class="analysis-item">
+
+            <h3>${category}</h3>
+
+            <div class="analysis-value">
+                ${formatMoney(current)}
+            </div>
+
+            <div style="
+                color:var(--muted);
+                font-size:12px;
+                margin-top:5px;
+            ">
+
+                الشهر اللي فات:
+                ${formatMoney(previous)}
+
+            </div>
+
+            ${status}
+
+        </div>
+        `;
+
+    });
+
+    if(!found){
+
+        html=`
+
+        <div class="empty">
+
+            لسه مفيش بيانات كفاية
+            للمقارنة بين الشهر الحالي
+            والشهر السابق.
+
+        </div>
+
+        `;
+
+    }
+
+    document.getElementById("monthlyAnalysis")
+        .innerHTML=`
+
+        <div class="analysis-grid">
+            ${html}
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function updateDashboard(){
+
+    syncBalance();
+
+    document.getElementById("balance")
+        .textContent=formatMoney(data.balance);
+
+    const today=
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    const todayExpense=
+        data.transactions
+        .filter(t=>
+            t.date===today &&
+            t.type==="expense"
+        )
+        .reduce((sum,t)=>sum+t.amount,0);
+
+    document.getElementById("todayExpense")
+        .textContent=formatMoney(todayExpense);
+
+    document.getElementById("transactionCount")
+        .textContent=data.transactions.length;
+
+    const currentMonth=today.substring(0,7);
+
+    const monthExpense=
+        data.transactions
+        .filter(t=>
+            t.date.startsWith(currentMonth) &&
+            t.type==="expense"
+        )
+        .reduce((sum,t)=>sum+t.amount,0);
+
+    document.getElementById("monthExpense")
+        .textContent=formatMoney(monthExpense);
+
+    const days=new Date().getDate();
+
+    document.getElementById("dailyAverage")
+        .textContent=formatMoney(
+            days ? monthExpense/days : 0
+        );
+
+    monthlyAnalysis();
+
+    renderDashboardVaults();
+
+    let recent=
+        [...data.transactions]
+        .sort((a,b)=>b.id-a.id)
+        .slice(0,5);
+
+    if(!recent.length){
+
+        document.getElementById("recentTransactions")
+            .innerHTML=
+            `<div class="empty">
+                لسه مفيش عمليات مسجلة
+            </div>`;
+
+        return;
+
+    }
+
+    let html=`
+
+    <div class="table-wrapper">
+
+    <table>
+
+    <thead>
+
+    <tr>
+        <th>التاريخ</th>
+        <th>الخزنة</th>
+        <th>النوع</th>
+        <th>المبلغ</th>
+        <th>التفاصيل</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    `;
+
+    recent.forEach(t=>{
+
+        html+=`
+
+        <tr>
+
+            <td>${formatDate(t.date)}</td>
+
+            <td>
+                🏦 ${escapeHTML(getVaultName(t.vaultId))}
+            </td>
+
+            <td>
+
+                ${
+                    t.type==="income"
+                    ?'<span class="green">🟢 إضافة</span>'
+                    :'<span class="red">🔴 مصروف</span>'
+                }
+
+            </td>
+
+            <td>${formatMoney(t.amount)}</td>
+
+            <td>
+                ${escapeHTML(t.note||t.category||"-")}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    html+=`
+
+    </tbody>
+
+    </table>
+
+    </div>
+    `;
+
+    document.getElementById("recentTransactions")
+        .innerHTML=html;
+
+}
+
+
+/* =========================
+   DASHBOARD VAULTS
+========================= */
+
+function renderDashboardVaults(){
+
+    const container=
+        document.getElementById("dashboardVaults");
+
+    if(!data.vaults.length){
+
+        container.innerHTML=
+            `<div class="empty">لا توجد خزائن</div>`;
+
+        return;
+
+    }
+
+    let html=`
+
+    <div class="vaults-grid">
+    `;
+
+    data.vaults.forEach(v=>{
+
+        html+=`
+
+        <div class="vault-card">
+
+            <div class="vault-top">
+
+                <div>
+
+                    <div class="vault-name">
+                        ${escapeHTML(v.name)}
+                    </div>
+
+                    <div style="
+                        color:var(--muted);
+                        font-size:12px;
+                        margin-top:4px;
+                    ">
+                        ${v.main?"الخزنة الرئيسية":"خزنة مستقلة"}
+                    </div>
+
+                </div>
+
+                <div class="vault-icon">
+                    🏦
+                </div>
+
+            </div>
+
+            <div class="vault-balance">
+                ${formatMoney(v.balance)}
+            </div>
+
+        </div>
+        `;
+
+    });
+
+    html+=`</div>`;
+
+    container.innerHTML=html;
+
+}
+
+
+/* =========================
+   QUICK
+========================= */
+
+function openQuick(type){
+
+    quickType=type;
+
+    document.getElementById("quickTitle")
+        .textContent=
+            type==="income"
+            ?"➕ إضافة رصيد"
+            :"💸 إضافة مصروف";
+
+    document.getElementById("quickAmount").value="";
+    document.getElementById("quickNote").value="";
+
+    populateVaultSelects();
+
+    document.getElementById("quickModal")
+        .style.display="flex";
+
+}
+
+
+function closeQuick(){
+
+    document.getElementById("quickModal")
+        .style.display="none";
+
+}
+
+
+function saveQuick(){
+
+    const amount=
+        Number(document.getElementById("quickAmount").value);
+
+    const note=
+        document.getElementById("quickNote")
+        .value.trim();
+
+    const vaultId=
+        document.getElementById("quickVault").value;
+
+    const vault=getVault(vaultId);
+
+    if(!vault){
+
+        showNotification(
+            "اختر خزنة صحيحة",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!amount || amount<=0){
+
+        showNotification(
+            "أدخل مبلغ صحيح",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        quickType==="expense" &&
+        amount>vault.balance
+    ){
+
+        if(
+            !confirm(
+                "المبلغ أكبر من رصيد الخزنة. هل تريد الاستمرار؟"
+            )
+        ){
+
+            return;
+
+        }
+
+    }
+
+    const today=
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    data.transactions.push({
+
+        id:Date.now(),
+
+        type:quickType,
+
+        amount,
+
+        date:today,
+
+        vaultId,
+
+        category:
+            quickType==="income"
+            ?"إضافة رصيد"
+            :"مصروف",
+
+        note
+
+    });
+
+    if(quickType==="income"){
+        vault.balance+=amount;
+    }else{
+        vault.balance-=amount;
+    }
+
+    syncBalance();
+
+    saveData();
+
+    closeQuick();
+
+    showNotification(
+        quickType==="income"
+        ?"تم إضافة الرصيد بنجاح 💰"
+        :"تم تسجيل المصروف وخصمه من الخزنة 💸",
+        "success"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   VAULT MANAGEMENT
+========================= */
+
+function openAddVault(){
+
+    editingVaultId=null;
+
+    document.getElementById("vaultModalTitle")
+        .textContent="➕ إضافة خزنة جديدة";
+
+    document.getElementById("vaultName").value="";
+
+    document.getElementById("vaultModal")
+        .style.display="flex";
+
+}
+
+
+function openEditVault(id){
+
+    const vault=getVault(id);
+
+    if(!vault)return;
+
+    editingVaultId=id;
+
+    document.getElementById("vaultModalTitle")
+        .textContent="✏️ تعديل اسم الخزنة";
+
+    document.getElementById("vaultName").value=
+        vault.name;
+
+    document.getElementById("vaultModal")
+        .style.display="flex";
+
+}
+
+
+function closeVaultModal(){
+
+    document.getElementById("vaultModal")
+        .style.display="none";
+
+}
+
+
+function saveVault(){
+
+    const name=
+        document.getElementById("vaultName")
+        .value.trim();
+
+    if(!name){
+
+        showNotification(
+            "اكتب اسم الخزنة أولًا",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(editingVaultId){
+
+        const vault=getVault(editingVaultId);
+
+        if(vault){
+
+            vault.name=name;
+
+        }
+
+        showNotification(
+            "تم تعديل اسم الخزنة ✏️",
+            "success"
+        );
+
+    }else{
+
+        data.vaults.push({
+
+            id:"vault_"+Date.now(),
+
+            name,
+
+            balance:0,
+
+            main:false
+
+        });
+
+        showNotification(
+            "تمت إضافة الخزنة بنجاح 🏦",
+            "success"
+        );
+
+    }
+
+    saveData();
+
+    closeVaultModal();
+
+    updateAll();
+
+}
+
+
+function deleteVault(id){
+
+    const vault=getVault(id);
+
+    if(!vault)return;
+
+    if(vault.main){
+
+        showNotification(
+            "لا يمكن حذف الخزنة الأساسية",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const related=
+        data.transactions.filter(
+            t=>t.vaultId===id
+        );
+
+    if(related.length){
+
+        const answer=
+            prompt(
+                "هذه الخزنة تحتوي على عمليات. اكتب DELETE لحذف الخزنة وعملياتها:"
+            );
+
+        if(answer!=="DELETE"){
+
+            showNotification(
+                "لم يتم حذف الخزنة",
+                "info"
+            );
+
+            return;
+
+        }
+
+        data.transactions=
+            data.transactions.filter(
+                t=>t.vaultId!==id
+            );
+
+    }else{
+
+        if(
+            !confirm(
+                `هل تريد حذف "${vault.name}"؟`
+            )
+        ){
+            return;
+        }
+
+    }
+
+    data.vaults=
+        data.vaults.filter(
+            v=>v.id!==id
+        );
+
+    syncBalance();
+
+    saveData();
+
+    showNotification(
+        "تم حذف الخزنة 🗑️",
+        "info"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   VAULT MONEY
+========================= */
+
+function openVaultMoney(id,type){
+
+    const vault=getVault(id);
+
+    if(!vault)return;
+
+    currentVaultId=id;
+
+    vaultMoneyType=type;
+
+    document.getElementById("vaultMoneyTitle")
+        .textContent=
+            type==="income"
+            ?`➕ إضافة مبلغ إلى ${vault.name}`
+            :`💸 سحب مبلغ من ${vault.name}`;
+
+    document.getElementById("vaultMoneyAmount").value="";
+    document.getElementById("vaultMoneyNote").value="";
+
+    document.getElementById("vaultMoneyModal")
+        .style.display="flex";
+
+}
+
+
+function closeVaultMoneyModal(){
+
+    document.getElementById("vaultMoneyModal")
+        .style.display="none";
+
+}
+
+
+function saveVaultMoney(){
+
+    const vault=getVault(currentVaultId);
+
+    if(!vault){
+
+        closeVaultMoneyModal();
+
+        return;
+
+    }
+
+    const amount=
+        Number(
+            document.getElementById("vaultMoneyAmount").value
+        );
+
+    const note=
+        document.getElementById("vaultMoneyNote")
+        .value.trim();
+
+    if(!amount || amount<=0){
+
+        showNotification(
+            "أدخل مبلغ صحيح",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        vaultMoneyType==="expense" &&
+        amount>vault.balance
+    ){
+
+        if(
+            !confirm(
+                "المبلغ أكبر من رصيد الخزنة. هل تريد الاستمرار؟"
+            )
+        ){
+            return;
+        }
+
+    }
+
+    const today=
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    data.transactions.push({
+
+        id:Date.now(),
+
+        type:vaultMoneyType,
+
+        amount,
+
+        date:today,
+
+        vaultId:vault.id,
+
+        category:
+            vaultMoneyType==="income"
+            ?"إضافة للخزنة"
+            :"سحب من الخزنة",
+
+        note
+
+    });
+
+    if(vaultMoneyType==="income"){
+
+        vault.balance+=amount;
+
+    }else{
+
+        vault.balance-=amount;
+
+    }
+
+    syncBalance();
+
+    saveData();
+
+    closeVaultMoneyModal();
+
+    showNotification(
+        vaultMoneyType==="income"
+        ?"تمت إضافة المبلغ للخزنة 💰"
+        :"تم سحب المبلغ من الخزنة 💸",
+        "success"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   RENDER VAULTS
+========================= */
+
+function renderVaults(){
+
+    const container=
+        document.getElementById("vaultsContainer");
+
+    if(!container)return;
+
+    document.getElementById("vaultTotal")
+        .textContent=formatMoney(data.balance);
+
+    let html="";
+
+    data.vaults.forEach(v=>{
+
+        html+=`
+
+        <div class="vault-card ${v.main?"vault-main":""}">
+
+            <div class="vault-top">
+
+                <div>
+
+                    <div class="vault-name">
+
+                        🏦 ${escapeHTML(v.name)}
+
+                    </div>
+
+                    <div style="
+                        color:var(--muted);
+                        font-size:12px;
+                        margin-top:4px;
+                    ">
+
+                        ${
+                            v.main
+                            ?"الخزنة الأساسية"
+                            :"خزنة مستقلة"
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="vault-icon">
+                    💰
+                </div>
+
+            </div>
+
+            <div class="vault-balance">
+                ${formatMoney(v.balance)}
+            </div>
+
+            <div class="vault-actions">
+
+                <button
+                    class="vault-add"
+                    onclick="openVaultMoney('${v.id}','income')"
+                >
+                    ➕ إضافة
+                </button>
+
+                <button
+                    class="vault-withdraw"
+                    onclick="openVaultMoney('${v.id}','expense')"
+                >
+                    💸 سحب
+                </button>
+
+                <button
+                    class="vault-edit"
+                    onclick="openEditVault('${v.id}')"
+                >
+                    ✏️ تعديل
+                </button>
+
+                ${
+                    v.main
+                    ?""
+                    :`
+                    <button
+                        class="vault-delete"
+                        onclick="deleteVault('${v.id}')"
+                    >
+                        🗑️ حذف
+                    </button>
+                    `
+                }
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    container.innerHTML=html;
+
+}
+
+
+/* =========================
+   USERNAME
+========================= */
+
+function changeUsername(){
+
+    const name=
+        document.getElementById("newUsername")
+        .value.trim();
+
+    if(!name){
+
+        showNotification(
+            "اكتب اسم المستخدم أولًا",
+            "error"
+        );
+
+        return;
+
+    }
+
+    settings.username=name;
+
+    saveSettings();
+
+    showNotification(
+        "تم تغيير اسم المستخدم 👤",
+        "success"
+    );
+
+    updateAll();
+
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function loadTheme(){
+
+    if(settings.theme==="dark"){
+
+        document.body.classList.add("dark");
+
+        document.getElementById("themeSwitch")
+            .classList.add("active");
+
+    }else{
+
+        document.body.classList.remove("dark");
+
+        document.getElementById("themeSwitch")
+            .classList.remove("active");
+
+    }
+
+}
+
+
+function toggleTheme(){
+
+    settings.theme=
+        settings.theme==="dark"
+        ?"light"
+        :"dark";
+
+    saveSettings();
+
+    loadTheme();
+
+    showNotification(
+        settings.theme==="dark"
+        ?"تم تفعيل الوضع الليلي 🌙"
+        :"تم تفعيل الوضع النهاري ☀️",
+        "info"
+    );
+
+}
+
+
+/* =========================
+   BALANCE
+========================= */
+
+function setBalance(){
+
+    const vaultId=
+        document.getElementById("manualBalanceVault").value;
+
+    const vault=getVault(vaultId);
+
+    const balance=
+        Number(
+            document.getElementById("manualBalance").value
+        );
+
+    if(!vault){
+
+        showNotification(
+            "اختر خزنة صحيحة",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(balance<0 || isNaN(balance)){
+
+        showNotification(
+            "الرصيد غير صحيح",
+            "error"
+        );
+
+        return;
+
+    }
+
+    vault.balance=balance;
+
+    syncBalance();
+
+    saveData();
+
+    updateAll();
+
+    showNotification(
+        `تم تعديل رصيد "${vault.name}" 💰`,
+        "success"
+    );
+
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+function changePassword(){
+
+    const oldPassword=
+        document.getElementById("oldPassword").value;
+
+    const newPassword=
+        document.getElementById("newPassword").value;
+
+    const confirmPassword=
+        document.getElementById("confirmPassword").value;
+
+    const message=
+        document.getElementById("passwordMessage");
+
+    if(oldPassword!==settings.password){
+
+        message.textContent=
+            "❌ كلمة المرور الحالية غير صحيحة";
+
+        message.style.color="var(--red)";
+
+        showNotification(
+            "كلمة المرور الحالية غير صحيحة",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(newPassword.length<4){
+
+        message.textContent=
+            "❌ كلمة المرور لازم تكون 4 أحرف أو أكثر";
+
+        message.style.color="var(--red)";
+
+        showNotification(
+            "كلمة المرور الجديدة قصيرة",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(newPassword!==confirmPassword){
+
+        message.textContent=
+            "❌ كلمتا المرور غير متطابقتين";
+
+        message.style.color="var(--red)";
+
+        showNotification(
+            "تأكيد كلمة المرور غير مطابق",
+            "error"
+        );
+
+        return;
+
+    }
+
+    settings.password=newPassword;
+
+    saveSettings();
+
+    document.getElementById("oldPassword").value="";
+    document.getElementById("newPassword").value="";
+    document.getElementById("confirmPassword").value="";
+
+    message.textContent=
+        "✅ تم تغيير كلمة المرور بنجاح";
+
+    message.style.color="var(--green)";
+
+    showNotification(
+        "تم تغيير كلمة المرور 🔐",
+        "success"
+    );
+
+}
+
+
+/* =========================
+   CLEAR DATA
+========================= */
+
+function clearAllData(){
+
+    const answer=
+        prompt(
+            "اكتب DELETE لتأكيد حذف كل العمليات والخزائن:"
+        );
+
+    if(answer!=="DELETE"){
+
+        showNotification(
+            "لم يتم حذف البيانات",
+            "info"
+        );
+
+        return;
+
+    }
+
+    data={
+
+        balance:0,
+
+        vaults:[
+
+            {
+                id:"main",
+                name:"الخزنة الأساسية",
+                balance:0,
+                main:true
+            }
+
+        ],
+
+        transactions:[]
+
+    };
+
+    saveData();
+
+    updateAll();
+
+    showNotification(
+        "تم حذف كل البيانات وإعادة الخزنة الأساسية 🗑️",
+        "info"
+    );
+
+}
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function formatMoney(value){
+
+    return Number(value)
+        .toLocaleString("ar-EG",{
+            maximumFractionDigits:2
+        })
+        +" ج.م";
+
+}
+
+
+function formatDate(date){
+
+    return new Date(date+"T00:00:00")
+        .toLocaleDateString("ar-EG");
+
+}
+
+
+function formatMonth(month){
+
+    return new Date(month+"-01T00:00:00")
+        .toLocaleDateString(
+            "ar-EG",
+            {
+                year:"numeric",
+                month:"long"
+            }
+        );
+
+}
+
+
+function escapeHTML(text){
+
+    return String(text)
+
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   OPERATION LABEL
+========================= */
+
+function updateVaultLabel(){
+
+    populateVaultSelects();
+
+}
+
+
+/* =========================
+   UPDATE ALL
+========================= */
+
+function updateAll(){
+
+    syncBalance();
+
+    updateDashboard();
+
+    renderTransactions();
+
+    populateMonths();
+
+    populateVaultSelects();
+
+    renderVaults();
+
+    if(
+        document.getElementById("monthSelect").value
+    ){
+
+        renderMonth();
+
+    }
+
+    document.getElementById("manualBalance").value=
+        getVault(
+            document.getElementById("manualBalanceVault").value
+        )?.balance || 0;
+
+    document.getElementById("newUsername").value=
+        settings.username;
+
+    document.getElementById("currentDate").textContent=
+
+        new Date().toLocaleDateString(
+            "ar-EG",
+            {
+                weekday:"long",
+                year:"numeric",
+                month:"long",
+                day:"numeric"
+            }
+        );
+
+    loadTheme();
+
+}
+
+
+/* =========================
+   EVENTS
+========================= */
+
+document.getElementById("operationDate").value=
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+document.getElementById("password")
+    .addEventListener("keydown",function(e){
+
+        if(e.key==="Enter"){
+            login();
+        }
+
+    });
+
+document.getElementById("manualBalanceVault")
+    .addEventListener("change",function(){
+
+        updateManualBalance();
+
+    });
+
+
+/* إغلاق النوافذ عند الضغط خارجها */
+
+document.querySelectorAll(".modal")
+    .forEach(modal=>{
+
+        modal.addEventListener("click",function(e){
+
+            if(e.target===modal){
+
+                modal.style.display="none";
+
+            }
+
+        });
+
+    });
+
+
+loadTheme();
+
+</script>
+
+</body>
+</html>
