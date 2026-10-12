@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f3e8ff, #fce7f3, #ede9fe);
+    color: #3b0764;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+    animation: slideDown 0.8s ease;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #7e22ce, #db2777);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    color: #9333a5;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 28px;
+    margin-bottom: 30px;
+    border: 1px solid #e9d5ff;
+    border-radius: 24px;
+    box-shadow: 0 10px 35px rgba(126, 34, 206, 0.12);
+    animation: fadeUp 0.8s ease;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 15px 40px rgba(126, 34, 206, 0.2);
+    transform: translateY(-3px);
+}
+
+.card h2 {
+    font-size: 22px;
+    margin-bottom: 22px;
+    color: #7e22ce;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e9d5ff;
+    border-radius: 12px;
+    outline: none;
+    background: #faf5ff;
+    color: #3b0764;
+    font-family: inherit;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+input::placeholder {
+    color: #a78bba;
+}
+
+input:focus {
+    border-color: #a855f7;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.12);
+    transform: translateY(-2px);
+}
+
+#btns {
+    grid-column: 1 / -1;
+}
+
+button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.main-btn {
+    width: 100%;
+    padding: 14px;
+    color: white;
+    background: linear-gradient(90deg, #9333ea, #db2777);
+    box-shadow: 0 5px 15px rgba(147, 51, 234, 0.2);
+}
+
+.main-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(147, 51, 234, 0.35);
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+thead {
+    background: linear-gradient(90deg, #7e22ce, #c026d3);
+    color: white;
+}
+
+th, td {
+    padding: 16px 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+thead th {
+    font-weight: 600;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f3e8ff;
+    transition: 0.3s ease;
+    animation: fadeUp 0.4s ease;
+}
+
+tbody tr:hover {
+    background: #faf5ff;
+    transform: scale(1.005);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+.edit-btn {
+    background: #f3e8ff;
+    color: #7e22ce;
+}
+
+.edit-btn:hover {
+    background: #7e22ce;
+    color: white;
+    transform: scale(1.08);
+}
+
+.delete-btn {
+    background: #ffe4e6;
+    color: #e11d48;
+}
+
+.delete-btn:hover {
+    background: #e11d48;
+    color: white;
+    transform: scale(1.08);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 25px 12px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .card {
+        padding: 20px 14px;
+        border-radius: 18px;
+    }
+
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    #btns {
+        grid-column: auto;
+    }
+
+    .card h2 {
+        font-size: 19px;
+    }
+}

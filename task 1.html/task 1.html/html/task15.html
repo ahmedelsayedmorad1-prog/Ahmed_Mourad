@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task15</title>
+    <link rel="stylesheet" href="../css/task15.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>Wellcome</h1>
+           
+        </header>
+
+        <div class="card">
+            <h2 id="formTitle">Add New One</h2>
+
+            <div class="form">
+                <input type="text" id="name" placeholder=" Name">
+                <input type="number" id="age" placeholder=" Age">
+                <input type="text" id="jop" placeholder=" Job">
+
+                <div id="btns">
+                    <button class="main-btn" onclick="add()">add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card table-card">
+            <h2>The List</h2>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Job</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/task15.js"></script>
+</body>
+
+</html>
